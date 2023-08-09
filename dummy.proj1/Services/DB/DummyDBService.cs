@@ -1,5 +1,6 @@
 ﻿using dummy.Data;
 using dummy.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +20,21 @@ namespace dummy.proj1.Services.DB
 
         public async Task AddPost(Post post)
         {
-            var checkPost = await _context.Posts.FindAsync(post.Id);
-            if (checkPost != null)
-                return;
-            User user = _context.Users.FirstOrDefault(u => u.Id == post.UserId);
-            if (user != null)
-                post.User = user;
-            var newPost = _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
+            var existingPost = _context.Posts.FirstOrDefault(p => p.Id == post.Id);
+            if (existingPost != null)
+            {
+                existingPost.Tags = post.Tags;
+                existingPost.Reactions = post.Reactions;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                User user = _context.Users.FirstOrDefault(u => u.Id == post.UserId);
+                if (user != null)
+                    post.User = user;
+                var newPost = _context.Posts.Add(post);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task AddTodo(TodoModel todo)

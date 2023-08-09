@@ -4,7 +4,7 @@ namespace dummy.Models
     {
         public int Id { get; set; }
         public int Reactions { get; set; }
-        public ICollection<string> Tags { get; } = new List<string>();
+        public string[] Tags { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
     }

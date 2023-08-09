@@ -10,7 +10,7 @@ namespace dummy.Data
         public DbSet<Post> Posts => Set<Post>();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=stickers;Port=54321;Database=dummy;Username=postgres;Password=bananas");
+            optionsBuilder.UseNpgsql("Host=192.168.1.69;Port=54321;Database=dummy;Username=postgres;Password=bananas");
         }
     }
 }
