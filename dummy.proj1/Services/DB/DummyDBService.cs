@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace dummy.proj1.Services.DB
 {
-    internal class DummyDBService : IDummyDBService
+    public class DummyDBService : IDummyDBService
     {
         private readonly DummyContext _context;
 
@@ -56,6 +56,14 @@ namespace dummy.proj1.Services.DB
                 return;
             var newUser = _context.Users.Add(user);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> GetUsersWithNReactionsAndXTag(int reactions, string tag)
+        {
+            var users = _context.Users
+            .Where(u => u.Posts.Count(p => p.Reactions > 0) >= reactions && u.Posts.Any(p => p.Tags.Contains(tag)))
+            .ToList();
+            return users;
         }
     }
 }

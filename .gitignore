@@ -2,3 +2,6 @@
 dummy.proj1/bin/*
 dummy.proj1/obj/*
 /.vs
+/dummy.api/bin/Debug/net6.0
+/dummy.api/obj
+/dummy.contracts/obj
