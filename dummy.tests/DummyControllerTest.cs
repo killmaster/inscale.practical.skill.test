@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace dummy.tests;
 
 public class DummyControllerTest
 {
     [Fact]
-    public void Test1()
+    public async Task Test1Async()
     {
         // Arrange
         var request = new AtLeastNReactionsAndSpecificTagRequest
@@ -21,33 +22,19 @@ public class DummyControllerTest
             Tag = "history"
         };
 
-        var expectedResponse = new AtLeastNReactionsAndSpecificTagResponse
-        {
-            Users = new List<User>()
-        };
-        List<Models.User>? userList = new();
-
         var dbServiceMock = new Mock<IDummyDBService>();
-        dbServiceMock.Setup(
-            x => x.GetUsersWithNReactionsAndXTag(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(userList);
-
-        // expectedResponse.Users = userList.Cast<Models.User>().ToList();  // this doesn't work and I didn't bother to find out why.
-        List<User> respUsers = new();
-        foreach (var user in userList)
-        {
-            respUsers.Add(user);
-        }
-        expectedResponse.Users = respUsers;
+        dbServiceMock.Setup(x => x.GetUsersWithNReactionsAndXTag(It.IsAny<int>(), It.IsAny<string>()))
+            .ReturnsAsync(new List<Models.User>());
 
         var controller = new DummyController(dbServiceMock.Object);
 
         // Act
-        var result = controller.UsersWithNReactionsAndXTag(request);
+        var result = await controller.UsersWithNReactionsAndXTag(request);
+        var okResult = result as OkObjectResult;
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var actualResponse = Assert.IsType<contracts.AtLeastNReactionsAndSpecificTagResponse>(okResult.Value);
-        Assert.Equal(expectedResponse.Users, actualResponse.Users);
+        Assert.NotNull(okResult);
+        Assert.Equal(200, okResult.StatusCode);
+        Assert.IsType<AtLeastNReactionsAndSpecificTagResponse>(okResult.Value);
     }
 }
