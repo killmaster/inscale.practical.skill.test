@@ -17,6 +17,19 @@ namespace dummy.api.Controllers
             _dbService = dbService;
         }
 
+        public async Task<IActionResult> TodosOfUsersWithMoreThanNPosts(TodosOfUsersWithMoreThanNPostsRequest request)
+        {
+            int posts = 0;
+            if (request.NumberOfPosts != null)
+                posts = (int)request.NumberOfPosts;
+            else return BadRequest();
+            var todos = await _dbService.TodosOfUsersWithMoreThanNPosts(posts);
+            return Ok(new TodosOfUsersWithMoreThanNPostsResponse()
+            {
+                Todos = todos.Cast<TodoModel>().ToList()
+            });
+        }
+
         [HttpGet("Users/ReactionsTag")]
         [ProducesResponseType(typeof(AtLeastNReactionsAndSpecificTagResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,18 +46,6 @@ namespace dummy.api.Controllers
             {
                 Users = users.Cast<User>().ToList()
             });
-            // List<User> result = new();
-            // foreach (var user in users)
-            // {
-            //     User tempUser = new()
-            //     {
-            //         Id = user.Id,
-            //         FirstName = user.FirstName,
-            //         LastName = user.LastName
-            //     };
-            //     result.Add(tempUser);
-            // }
-            // return Ok(result);
         }
     }
 }

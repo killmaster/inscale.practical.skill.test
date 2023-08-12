@@ -8,6 +8,7 @@ namespace dummy.Data
         public DbSet<User> Users => Set<User>();
         public DbSet<TodoModel> TodoModels => Set<TodoModel>();
         public DbSet<Post> Posts => Set<Post>();
+        public DbSet<Bank> Bank => Set<Bank>();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=192.168.1.69;Port=54321;Database=dummy;Username=postgres;Password=bananas");
@@ -26,6 +27,14 @@ namespace dummy.Data
                 .WithOne(e => (Models.User)e.User)
                 .HasForeignKey(e => e.UserId)
                 .HasPrincipalKey(e => e.Id);
+            modelBuilder.Entity<User>()
+                .HasOne(e => e.Bank)
+                .WithOne(e => (Models.User)e.User)
+                .HasForeignKey<Bank>(e => e.UserId)
+                .HasPrincipalKey<User>(e => e.Id);
+            modelBuilder.Entity<Bank>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
         }
     }
 }

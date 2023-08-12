@@ -1,5 +1,6 @@
 ﻿using dummy.Data;
 using dummy.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,6 @@ namespace dummy.proj1.Services.DB
             {
                 existingPost.Tags = post.Tags;
                 existingPost.Reactions = post.Reactions;
-                await _context.SaveChangesAsync();
             }
             else
             {
@@ -33,28 +33,61 @@ namespace dummy.proj1.Services.DB
                 if (user != null)
                     post.User = user;
                 var newPost = _context.Posts.Add(post);
-                await _context.SaveChangesAsync();
             }
+            await _context.SaveChangesAsync();
         }
 
         public async Task AddTodo(TodoModel todo)
         {
-            var checkTodo = await _context.TodoModels.FindAsync(todo.Id);
-            if (checkTodo != null)
-                return;
-            User user = _context.Users.FirstOrDefault(u => u.Id == todo.UserId);
-            if (user != null)
-                todo.User = user;
-            var newTodo = _context.TodoModels.Add(todo);
+            var existingTodo = _context.TodoModels.FirstOrDefault(t => t.Id == todo.Id);
+            if (existingTodo != null)
+            {
+                existingTodo.Completed = todo.Completed;
+                existingTodo.Todo = todo.Todo;
+            }
+            else
+            {
+                User user = _context.Users.FirstOrDefault(u => u.Id == todo.UserId);
+                if (user != null)
+                    todo.User = user;
+                var newTodo = _context.TodoModels.Add(todo);
+            }
             await _context.SaveChangesAsync();
         }
 
         public async Task AddUser(User user)
         {
-            var checkUser = await _context.Users.FindAsync(user.Id);
-            if (checkUser != null)
-                return;
-            var newUser = _context.Users.Add(user);
+            var existingUser = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+            if (existingUser != null)
+            {
+                existingUser.Bank = user.Bank;
+                existingUser.FirstName = user.FirstName;
+                existingUser.LastName = user.LastName;
+                await AddBank(user.Bank);
+            }
+            else
+            {
+                _context.Users.Add(user);
+                await AddBank(user.Bank);
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddBank(Bank bank)
+        {
+            var existingBank = _context.Bank.FirstOrDefault(b => b.Id == bank.Id);
+            if (existingBank != null)
+            {
+                existingBank.CardExpire = bank.CardExpire;
+                existingBank.CardNumber = bank.CardNumber;
+                existingBank.CardType = bank.CardType;
+                existingBank.Currency = bank.Currency;
+                existingBank.Iban = bank.Iban;
+            }
+            else
+            {
+                _context.Bank.Add(bank);
+            }
             await _context.SaveChangesAsync();
         }
 
@@ -64,6 +97,23 @@ namespace dummy.proj1.Services.DB
             .Where(u => u.Posts.Count(p => p.Reactions > 0) >= reactions && u.Posts.Any(p => p.Tags.Contains(tag)))
             .ToList();
             return users;
+        }
+
+        public async Task<List<TodoModel>> TodosOfUsersWithMoreThanNPosts(int v)
+        {
+            var users = await _context.Users
+                .Where(u => u.Posts.Count > v)
+                .ToListAsync();
+
+            List<TodoModel> todos = new();
+            foreach (var user in users)
+            {
+                var userTodos = _context.TodoModels
+                    .Where(todo => todo.UserId == user.Id)
+                    .ToList();
+                todos.AddRange(userTodos);
+            }
+            return todos;
         }
     }
 }
