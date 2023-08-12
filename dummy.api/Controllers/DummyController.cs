@@ -28,7 +28,23 @@ namespace dummy.api.Controllers
             if (request.Tag == null)
                 return BadRequest();
 
-            return Ok(await _dbService.GetUsersWithNReactionsAndXTag(reactions, request.Tag));
+            var users = await _dbService.GetUsersWithNReactionsAndXTag(reactions, request.Tag);
+            return Ok(new AtLeastNReactionsAndSpecificTagResponse()
+            {
+                Users = users.Cast<User>().ToList()
+            });
+            // List<User> result = new();
+            // foreach (var user in users)
+            // {
+            //     User tempUser = new()
+            //     {
+            //         Id = user.Id,
+            //         FirstName = user.FirstName,
+            //         LastName = user.LastName
+            //     };
+            //     result.Add(tempUser);
+            // }
+            // return Ok(result);
         }
     }
 }

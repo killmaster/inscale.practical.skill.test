@@ -1,11 +1,7 @@
 namespace dummy.Models
 {
-    public class TodoModel
+    public class TodoModel : contracts.TodoModel
     {
-        public int Id { get; set; }
-        public string Todo { get; set; }
-        public bool Completed { get; set; }
-        public User User { get; set; }
         public int UserId { get; set; }
     }
 }
