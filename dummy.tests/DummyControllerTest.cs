@@ -16,13 +16,28 @@ public class DummyControllerTest
             {
                 Id = 1,
                 FirstName = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                Bank = new Models.Bank()
+                {
+                    Id = 1,
+                    CardNumber = "1234567890123456",
+                    CardType = "mastercard",
+                    Currency = "EUR",
+                    UserId = 1
+                }
             },
             new Models.User()
             {
                 Id = 2,
                 FirstName = "Jane",
-                LastName = "Doe"
+                LastName = "Doe",
+                Bank = new(){
+                    Id = 2,
+                    CardNumber = "1234567890123456",
+                    CardType = "visa",
+                    Currency = "EUR",
+                    UserId = 2
+                }
             }
         };
 
@@ -140,12 +155,25 @@ public class DummyControllerTest
         // Arrange
         TodosOfUsersWithMoreThanNPostsRequest request = new()
         {
-            NumberOfPosts = 2
+            NumberOfPosts = 1
         };
 
         var dbServiceMock = new Mock<IDummyDBService>();
+
+        dbServiceMock.Setup(x => x.AddUser(It.IsAny<Models.User>()));
+        foreach (var user in _users)
+        {
+            await dbServiceMock.Object.AddUser(user);
+        }
+
+        dbServiceMock.Setup(x => x.AddTodo(It.IsAny<Models.TodoModel>()));
+        foreach (var todo in _todos)
+        {
+            await dbServiceMock.Object.AddTodo(todo);
+        }
+
         dbServiceMock.Setup(x => x.TodosOfUsersWithMoreThanNPosts(It.IsAny<int>()))
-            .ReturnsAsync(new List<Models.TodoModel>());
+            .ReturnsAsync(new List<Models.TodoModel>() { _todos[0], _todos[1] });
 
         var controller = new DummyController(dbServiceMock.Object);
 
@@ -157,6 +185,13 @@ public class DummyControllerTest
         Assert.NotNull(okResult);
         Assert.Equal(200, okResult.StatusCode);
         Assert.IsType<TodosOfUsersWithMoreThanNPostsResponse>(okResult.Value);
+        Assert.Equal(2, (okResult.Value as TodosOfUsersWithMoreThanNPostsResponse).Todos.Count);
+        int i = 0;
+        foreach (var todo in (okResult.Value as TodosOfUsersWithMoreThanNPostsResponse).Todos)
+        {
+            Assert.Equal(_todos[i].Id, todo.Id);
+            i++;
+        }
     }
 
     [Fact]
@@ -169,8 +204,21 @@ public class DummyControllerTest
         };
 
         var dbServiceMock = new Mock<IDummyDBService>();
+
+        dbServiceMock.Setup(x => x.AddUser(It.IsAny<Models.User>()));
+        foreach (var user in _users)
+        {
+            await dbServiceMock.Object.AddUser(user);
+        }
+
+        dbServiceMock.Setup(x => x.AddPost(It.IsAny<Models.Post>()));
+        foreach (var post in _posts)
+        {
+            await dbServiceMock.Object.AddPost(post);
+        }
+
         dbServiceMock.Setup(x => x.PostsOfUsersWithXCardType(It.IsAny<string>()))
-            .ReturnsAsync(new List<Models.Post>());
+            .ReturnsAsync(new List<Models.Post>() { _posts[0], _posts[1] });
 
         var controller = new DummyController(dbServiceMock.Object);
 
@@ -182,5 +230,12 @@ public class DummyControllerTest
         Assert.NotNull(okResult);
         Assert.Equal(200, okResult.StatusCode);
         Assert.IsType<PostsOfUsersWithXCardtypeResponse>(okResult.Value);
+        Assert.Equal(2, (okResult.Value as PostsOfUsersWithXCardtypeResponse).Posts.Count);
+        int i = 0;
+        foreach (var post in (okResult.Value as PostsOfUsersWithXCardtypeResponse).Posts)
+        {
+            Assert.Equal(_posts[i].Id, post.Id);
+            i++;
+        }
     }
 }
