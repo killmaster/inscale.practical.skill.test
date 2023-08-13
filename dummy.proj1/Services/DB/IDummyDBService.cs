@@ -15,5 +15,7 @@ namespace dummy.proj1.Services.DB
         Task AddTodo(TodoModel todo);
         Task<List<User>> GetUsersWithNReactionsAndXTag(int reactions, string tag);
         Task<List<TodoModel>> TodosOfUsersWithMoreThanNPosts(int v);
+
+        Task<List<Post>> PostsOfUsersWithXCardType(string cardType);
     }
 }

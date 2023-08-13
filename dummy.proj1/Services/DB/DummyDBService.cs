@@ -115,5 +115,21 @@ namespace dummy.proj1.Services.DB
             }
             return todos;
         }
+
+        public async Task<List<Post>> PostsOfUsersWithXCardType(string cardType)
+        {
+            var users = await _context.Users
+                .Where(u => u.Bank.CardType == "mastercard")
+                .ToListAsync();
+            List<Post> posts = new();
+            foreach (var user in users)
+            {
+                var userPosts = _context.Posts
+                    .Where(post => post.UserId == user.Id)
+                    .ToList();
+                posts.AddRange(userPosts);
+            }
+            return posts;
+        }
     }
 }

@@ -17,7 +17,10 @@ namespace dummy.api.Controllers
             _dbService = dbService;
         }
 
-        public async Task<IActionResult> TodosOfUsersWithMoreThanNPosts(TodosOfUsersWithMoreThanNPostsRequest request)
+        [HttpGet("Todos/UsersWithMoreThanNPosts")]
+        [ProducesResponseType(typeof(TodosOfUsersWithMoreThanNPostsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> TodosOfUsersWithMoreThanNPosts([FromQuery] TodosOfUsersWithMoreThanNPostsRequest request)
         {
             int posts = 0;
             if (request.NumberOfPosts != null)
@@ -45,6 +48,20 @@ namespace dummy.api.Controllers
             return Ok(new AtLeastNReactionsAndSpecificTagResponse()
             {
                 Users = users.Cast<User>().ToList()
+            });
+        }
+
+        [HttpGet("Posts/CardType")]
+        [ProducesResponseType(typeof(PostsOfUsersWithXCardtypeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PostsOfUsersWithXCardType([FromQuery] PostsOfUsersWithXCardtypeRequest request)
+        {
+            if (string.IsNullOrEmpty(request.Cardtype))
+                return BadRequest();
+            var posts = await _dbService.PostsOfUsersWithXCardType(request.Cardtype);
+            return Ok(new PostsOfUsersWithXCardtypeResponse()
+            {
+                Posts = posts.Cast<Post>().ToList()
             });
         }
     }
