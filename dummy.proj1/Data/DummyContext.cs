@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using dummy.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace dummy.Data
 {
     public class DummyContext : DbContext
     {
+        private string _connectionString;
         public DbSet<User> Users => Set<User>();
         public DbSet<TodoModel> TodoModels => Set<TodoModel>();
         public DbSet<Post> Posts => Set<Post>();
@@ -12,9 +14,28 @@ namespace dummy.Data
 
         public DbSet<CustomPost> CustomPosts => Set<CustomPost>();
 
+        // public DummyContext(DbContextOptions<DummyContext> options) : base(options) { }
+
+        public DummyContext()
+        {
+
+            ConfigurationBuilder configurationBuilder = new();
+            configurationBuilder.AddJsonFile("appsettings.json");
+            configurationBuilder.AddUserSecrets<Program>();
+            var configuration = configurationBuilder.Build();
+
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
+            string dbPassword = configuration["DbPassword"];
+
+            var conStrBuilder = new Npgsql.NpgsqlConnectionStringBuilder(connectionString);
+            conStrBuilder.Password = dbPassword;
+
+            _connectionString = conStrBuilder.ConnectionString;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=192.168.1.69;Port=54321;Database=dummy;Username=postgres;Password=bananas");
+            optionsBuilder.UseNpgsql(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

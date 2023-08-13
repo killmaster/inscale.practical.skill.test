@@ -4,6 +4,10 @@ using dummy.Data;
 using dummy.Models;
 using dummy.proj1.Services.API;
 using dummy.proj1.Services.DB;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 string usersUrl = "https://dummyjson.com/users",
     postsUrl = "https://dummyjson.com/posts",
