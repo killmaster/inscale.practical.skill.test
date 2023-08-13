@@ -11,6 +11,10 @@ namespace dummy.tests;
 
 public class DummyControllerTest
 {
+    /**
+     * Some dummy data to be used in
+     * the tests
+     */
     private List<Models.User> _users = new(){
             new Models.User()
             {
