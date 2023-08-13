@@ -2,8 +2,8 @@
 
 using dummy.Data;
 using dummy.Models;
-using dummy.proj1.Services.API;
-using dummy.proj1.Services.DB;
+using dummy.api.Services.API;
+using dummy.api.Services.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;

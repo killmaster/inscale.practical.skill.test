@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dummy.proj1.Services.DB
+namespace dummy.api.Services.DB
 {
     public class DummyDBService : IDummyDBService
     {

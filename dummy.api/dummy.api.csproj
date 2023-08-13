@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e862096b-a404-4506-bf5f-a8f92f4857f7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,12 +17,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\dummy.contracts\dummy.contracts.csproj" />
-    <ProjectReference Include="..\dummy.proj1\dummy.proj1.csproj" />
+    <!-- <ProjectReference Include="..\dummy.proj1\dummy.proj1.csproj" /> -->
   </ItemGroup>
 
 </Project>

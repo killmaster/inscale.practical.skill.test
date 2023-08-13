@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dummy.proj1.Services.API
+namespace dummy.api.Services.API
 {
     public interface IDummyAPIService
     {

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\dummy.contracts\dummy.contracts.csproj" />
+    <ProjectReference Include="..\dummy.api\dummy.api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

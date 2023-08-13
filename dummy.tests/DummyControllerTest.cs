@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using dummy.api.Controllers;
 using dummy.contracts;
-using dummy.proj1.Services.DB;
+using dummy.api.Services.DB;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;

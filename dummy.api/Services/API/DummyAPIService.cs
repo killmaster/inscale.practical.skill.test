@@ -8,9 +8,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace dummy.proj1.Services.API
+namespace dummy.api.Services.API
 {
-    internal class DummyAPIService : IDummyAPIService
+    public class DummyAPIService : IDummyAPIService
     {
         private string _usersUrl;
         private string _postsUrl;

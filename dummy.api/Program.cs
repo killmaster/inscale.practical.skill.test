@@ -1,5 +1,5 @@
 using dummy.Data;
-using dummy.proj1.Services.DB;
+using dummy.api.Services.DB;
 
 var builder = WebApplication.CreateBuilder(args);
 

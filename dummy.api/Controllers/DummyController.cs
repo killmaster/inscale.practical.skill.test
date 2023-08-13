@@ -1,5 +1,5 @@
 ﻿using dummy.contracts;
-using dummy.proj1.Services.DB;
+using dummy.api.Services.DB;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
