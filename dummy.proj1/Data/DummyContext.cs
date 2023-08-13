@@ -9,6 +9,9 @@ namespace dummy.Data
         public DbSet<TodoModel> TodoModels => Set<TodoModel>();
         public DbSet<Post> Posts => Set<Post>();
         public DbSet<Bank> Bank => Set<Bank>();
+
+        public DbSet<CustomPost> CustomPosts => Set<CustomPost>();
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=192.168.1.69;Port=54321;Database=dummy;Username=postgres;Password=bananas");
@@ -33,6 +36,9 @@ namespace dummy.Data
                 .HasForeignKey<Bank>(e => e.UserId)
                 .HasPrincipalKey<User>(e => e.Id);
             modelBuilder.Entity<Bank>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<CustomPost>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
         }

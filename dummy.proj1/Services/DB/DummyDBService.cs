@@ -63,11 +63,16 @@ namespace dummy.proj1.Services.DB
                 existingUser.Bank = user.Bank;
                 existingUser.FirstName = user.FirstName;
                 existingUser.LastName = user.LastName;
+                existingUser.Username = user.Username;
+                user.Bank.UserId = user.Id;
+                user.Bank.User = user;
                 await AddBank(user.Bank);
             }
             else
             {
                 _context.Users.Add(user);
+                user.Bank.UserId = user.Id;
+                user.Bank.User = user;
                 await AddBank(user.Bank);
             }
             await _context.SaveChangesAsync();
@@ -75,7 +80,7 @@ namespace dummy.proj1.Services.DB
 
         public async Task AddBank(Bank bank)
         {
-            var existingBank = _context.Bank.FirstOrDefault(b => b.Id == bank.Id);
+            var existingBank = _context.Bank.FirstOrDefault(b => b.UserId == bank.UserId);
             if (existingBank != null)
             {
                 existingBank.CardExpire = bank.CardExpire;
@@ -130,6 +135,23 @@ namespace dummy.proj1.Services.DB
                 posts.AddRange(userPosts);
             }
             return posts;
+        }
+
+        public async Task AddCustomPost(CustomPost customPost)
+        {
+            var existingPost = _context.CustomPosts.FirstOrDefault(p => p.PostId == customPost.PostId);
+            if (existingPost != null)
+            {
+                existingPost.UserName = customPost.UserName;
+                existingPost.HasFrenchTag = customPost.HasFrenchTag;
+                existingPost.HasFictionTag = customPost.HasFictionTag;
+                existingPost.HasMoreThanTwoReactions = customPost.HasMoreThanTwoReactions;
+            }
+            else
+            {
+                _context.CustomPosts.Add(customPost);
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

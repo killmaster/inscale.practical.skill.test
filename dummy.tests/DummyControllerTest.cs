@@ -17,6 +17,7 @@ public class DummyControllerTest
                 Id = 1,
                 FirstName = "John",
                 LastName = "Doe",
+                Username = "johndoe",
                 Bank = new Models.Bank()
                 {
                     Id = 1,
@@ -31,6 +32,7 @@ public class DummyControllerTest
                 Id = 2,
                 FirstName = "Jane",
                 LastName = "Doe",
+                Username = "janedoe",
                 Bank = new(){
                     Id = 2,
                     CardNumber = "1234567890123456",

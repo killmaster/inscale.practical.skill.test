@@ -42,3 +42,24 @@ foreach (User user in users2)
 {
     Console.WriteLine("User: " + user.FirstName);
 }
+
+
+/***
+ *
+ * This seems overly simple so I'm probably missing something
+ * This should be my answer to point 3 of the test
+ */
+var postsPart2 = _context.Posts.ToList();
+
+foreach (Post post in postsPart2)
+{
+    CustomPost customPost = new()
+    {
+        PostId = post.Id,
+        UserName = post.User.Username,
+        HasFrenchTag = post.Tags.Contains("french"),
+        HasFictionTag = post.Tags.Contains("fiction"),
+        HasMoreThanTwoReactions = post.Reactions > 2
+    };
+    await _dbService.AddCustomPost(customPost);
+}
