@@ -17,7 +17,7 @@ namespace dummy.api.Controllers
             _dbService = dbService;
         }
 
-        [HttpGet("Todos/UsersWithMoreThanNPosts")]
+        [HttpGet("Todos/")]
         [ProducesResponseType(typeof(TodosOfUsersWithMoreThanNPostsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> TodosOfUsersWithMoreThanNPosts([FromQuery] TodosOfUsersWithMoreThanNPostsRequest request)
@@ -33,7 +33,7 @@ namespace dummy.api.Controllers
             });
         }
 
-        [HttpGet("Users/ReactionsTag")]
+        [HttpGet("Users/")]
         [ProducesResponseType(typeof(AtLeastNReactionsAndSpecificTagResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UsersWithNReactionsAndXTag([FromQuery] AtLeastNReactionsAndSpecificTagRequest request)
@@ -51,7 +51,7 @@ namespace dummy.api.Controllers
             });
         }
 
-        [HttpGet("Posts/CardType")]
+        [HttpGet("Posts/")]
         [ProducesResponseType(typeof(PostsOfUsersWithXCardtypeResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostsOfUsersWithXCardType([FromQuery] PostsOfUsersWithXCardtypeRequest request)

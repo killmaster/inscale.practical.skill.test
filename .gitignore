@@ -8,3 +8,4 @@ dummy.proj1/obj/*
 /dummy.contracts/bin
 /dummy.tests/bin
 /dummy.tests/obj
+dummy.api/bin/

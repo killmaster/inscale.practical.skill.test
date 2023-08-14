@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="amazon.lambda.aspnetcoreserver.hosting" Version="1.6.0" />
+    <PackageReference Include="Amazon.Lambda.RuntimeSupport" Version="1.8.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.21" />
